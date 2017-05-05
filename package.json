@@ -15,6 +15,7 @@
     "browser-sync": "*",
     "gulp": "*",
     "gulp-autoprefixer": "*",
+    "gulp-image": "*",
     "gulp-notify": "*",
     "gulp-plumber": "*",
     "gulp-sass": "*",
