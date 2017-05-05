@@ -1,2 +1,2 @@
 # gulp-starter
-Gulp Starter - Gulp + webpack + babel + sass
+Gulp Starter - Gulp + webpack + babel + sass + browserSync
