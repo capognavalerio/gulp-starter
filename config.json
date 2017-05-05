@@ -30,9 +30,15 @@
       "success": "JS: compiled"
     }
   },
+  "images": {
+    "input": "src/images/**/*.*",
+    "output": "dist/images",
+    "options": {}
+  },
   "serve": {
     "css": "src/scss/**/*.scss",
     "js": "src/js/**/*.js",
+    "images": "src/images/**/*.*",
     "html": "dist/**/*.html",
     "browserSync": {
       "server": "./dist",
