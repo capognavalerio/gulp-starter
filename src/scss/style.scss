@@ -1,0 +1,12 @@
+body {
+  color: #000;
+  -webkit-font-smoothing: antialiased;
+}
+
+.scale {
+  transform: scale(0.5);
+}
+
+.skew {
+  transform: skew(0.5, 0.5);
+}

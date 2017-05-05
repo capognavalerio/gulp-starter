@@ -1,0 +1,58 @@
+{
+  "notify": {
+    "error": "Gulp Error: See Log in console to find the issue"
+  },
+  "css": {
+    "input": "src/scss/**/*.scss",
+    "output": "dist/css",
+    "sass": {
+      "errLogToConsole": true,
+      "outputStyle": "compressed"
+    },
+    "autoprefixer": {
+      "browsers": ["> 1%","Last 2 versions", "IE 9", "ios > 7"]
+    },
+    "message": {
+      "success": "SASS: style built"
+    }
+  },
+  "js": {
+    "input": "src/js",
+    "output": "dist/js",
+    "webpack": {
+      "filename": "main.js",
+      "babel": {
+        "plugins": ["transform-runtime"],
+        "presets": ["env"]
+      }
+    },
+    "message": {
+      "success": "JS: compiled"
+    }
+  },
+  "serve": {
+    "css": "src/scss/**/*.scss",
+    "js": "src/js/**/*.js",
+    "html": "dist/**/*.html",
+    "browserSync": {
+      "server": "./dist",
+      "notify": {
+        "styles": [
+          "padding: 10px",
+          "font-family: sans-serif",
+          "position: fixed",
+          "font-size: 14px",
+          "z-index: 9999",
+          "bottom: 0px",
+          "right: 0px",
+          "border-top-left-radius: 5px",
+          "background-color: #1B2032",
+          "opacity: 0.4",
+          "margin: 0",
+          "color: white",
+          "text-align: center"
+        ]
+      }
+    }
+  }
+}
