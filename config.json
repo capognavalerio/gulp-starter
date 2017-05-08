@@ -37,8 +37,8 @@
   },
   "serve": {
     "css": "src/scss/**/*.scss",
-    "js": "src/js/**/*.js",
     "images": "src/images/**/*.*",
+    "js": "dist/js/**/*.js",
     "html": "dist/**/*.html",
     "browserSync": {
       "server": "./dist",

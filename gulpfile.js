@@ -7,8 +7,8 @@ const notify = require('gulp-notify');
 const plumber = require('gulp-plumber');
 const watch = require('gulp-watch');
 const image = require('gulp-image');
-const webpack = require('webpack-stream');
-const webpackUglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
 const browserSync = require('browser-sync').create();
 const config = require('./config.json');
 
@@ -47,17 +47,27 @@ var cssTask = function() {
   return browserSync.active ? task.pipe(browserSync.stream()) : task;
 };
 
-var jsTask = function() {
+var webpackTask = function() {
   var webpackConfig = {
     entry: path.resolve(__dirname, config.js.input),
     devtool: "source-map",
+    watch: true,
+    cache: true,
     output: {
       path: path.resolve(__dirname, config.js.output),
       filename: config.js.webpack.filename
     },
     plugins: [
-      new webpackUglifyJSPlugin({
-        sourceMap: true
+      new webpack.optimize.UglifyJsPlugin({
+        sourceMap: true,
+        comments: false
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        filename: 'vendors.js',
+        minChunks: function(module) {
+          return module.context && module.context.indexOf('node_modules') !== -1;
+        }
       })
     ],
     module: {
@@ -83,20 +93,28 @@ var jsTask = function() {
     .pipe(plumber({
       errorHandler: handleErrors
     }))
-    .pipe(webpack(webpackConfig))
-    .pipe(gulp.dest(path.resolve(__dirname, config.js.output)))
-    .pipe(notify({
-      message: config.js.message.success,
-      onLast: true
-    }));
+    .pipe(webpackStream(webpackConfig, webpack))
+    .pipe(gulp.dest(path.resolve(__dirname, config.js.output)));
 };
 
 var serveTask = function() {
   browserSync.init(config.serve.browserSync);
+
+  gulp.start('webpack');
+
   gulp.watch(config.serve.css, ['css']);
-  gulp.watch(config.serve.js, ['watch-js']);
   gulp.watch(config.serve.images, ['watch-images']);
   gulp.watch(config.serve.html).on('change', browserSync.reload);
+  gulp.watch(config.serve.js).on('change', function() {
+    browserSync.reload();
+
+    return gulp
+      .src(path.resolve(__dirname, config.serve.js))
+      .pipe(notify({
+        message: config.js.message.success,
+        onLast: true
+      }));
+  });
 };
 
 var imagesTask = function() {
@@ -107,8 +125,7 @@ var imagesTask = function() {
 };
 
 gulp.task('css', cssTask);
-gulp.task('js', jsTask);
+gulp.task('webpack', webpackTask);
 gulp.task('serve', serveTask);
 gulp.task('images', imagesTask);
-gulp.task('watch-js', ['js'], execTaskAndReload);
 gulp.task('watch-images', ['images'], execTaskAndReload);
