@@ -3,7 +3,7 @@
     "error": "Gulp Error: See Log in console to find the issue"
   },
   "css": {
-    "input": "src/scss/**/*.scss",
+    "input": "src/scss/style.scss",
     "output": "dist/css",
     "sass": {
       "errLogToConsole": true,
